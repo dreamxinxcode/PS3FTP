@@ -1,7 +1,7 @@
 from ftplib import FTP
 import configparser
 import requests
-import urllib.request, urllib.error
+import urllib.request
 import os
 import socket
 import sys
@@ -23,19 +23,17 @@ global ccapiMenu
 global directory
 directory = "~/"
 
+
 def connect():
     global ps3IP
     ps3IP = input("\033[95m \033[1mEnter PS3 IP: \033[0m")
     print("[\033[95m*\033[0m] Connecting to: " + ps3IP)
-    success = ['http://'+ps3IP+':6333/ccapi/ringbuzzer?type=1', 'http://'+ps3IP+':6333/ccapi/notify?id=2&msg=Connected']
-    try:
-        for url in success:
-            urllib.request.urlopen(url)
-    except urllib.error.URLError as e:
-        print("Fuck")
-    except socket.timeout as e:
-        raise MyException("There wa   s an error: %r" % e)
-         
+
+    connected = ['http://'+ps3IP+':6333/ccapi/ringbuzzer?type=1',
+                 'http://'+ps3IP+':6333/ccapi/notify?id=2&msg=Connected']
+    for url in connected:
+        urllib.request.urlopen('http://'+ps3IP+':6333/ccapi/ringbuzzer?type=1')
+    print("[\033[95m*\033[0m] Trying " + ps3IP + " on port 21..")
     global ftp
     ftp = FTP(ps3IP)
     ftp.login()
@@ -44,17 +42,17 @@ def connect():
     ftp.retrlines('LIST')
     print("[\033[95m*\033[0m] Done")
 
+
 def listDir():
+    print("[\033[95m*\033[0m] Listing: %s" % ftp.pwd())
     ftp.retrlines('LIST')
-    urllib.request.urlopen('http://'+ps3IP+':6333/ccapi/notify?id=2&msg=No ps3 for scott XD')
-    firmware = urllib.request.urlopen('http://'+ps3IP+':6333/ccapi/getfirmwareinfo').read()
-    temp = urllib.request.urlopen('http://'+ps3IP+':6333/ccapi/gettemperature').read()
-    print(firmware)
-    print(temp)
+    print("[\033[95m*\033[0m] Done")
+
 
 def listTMP():
     ftp.cwd("/dev_hdd0/tmp")
     ftp.retrlines('LIST')
+
 
 def changeDirectory():
     directory = input("\033[95m \033[1mDirectory: \033[0m")
@@ -62,23 +60,35 @@ def changeDirectory():
     ftp.retrlines('LIST')
     print("[\033[95m*\033[0m] Changed to " + directory)
 
+
 def upload():
     filename = input("\033[95m \033[1mEnter file to upload: \033[0m")
-    print("[\033[95m*\033[0m] Uploading: " + filename)
+    print("[\033[95m*\033[0m] Uploading:\033[96m\033[1m %s" %
+          filename + "\033[0m")
     ftp.storbinary('STOR '+filename, open(filename, 'rb'))
     print("[\033[95m*\033[0m] Done")
+
 
 def installSPRX():
     ftp.cwd(testdir)
     ftp.storbinary('STOR '+test, open(test, 'rb'))
     ftp.quit()
 
+
 def delete():
     filename = input("\033[95m \033[1mFile to delete: \033[0m")
+    print("Deleting:\033[96m\033[1m %s" % filename + "\033[0m")
     ftp.delete(filename)
+    print("[\033[95m*\033[0m] Done")
+
+
+def help():
+    print(
+        "Visit \033[96m\033[1mhttps://github.com/dreamxinxcode/ps3ftp\033[0m for instructions")
+
 
 ccapiMenu = False
-    
+
 while ccapiMenu == True:
     ccapiOption = input("""
 ###############################################################\n
@@ -88,12 +98,11 @@ while ccapiMenu == True:
            [\033[95m4\033[0m] Console Information  [\033[95m9\033[0m] Help
            [\033[95m5\033[0m] Buzzer Options       [\033[95m10\033[0m] Exit\n
 ###############################################################\n\n"""
-+ "\033[95m┌─╼ \033[0m" + "root " + "\033[95m╺─╸ \033[0m" + "playstation " + "[\033[95m" + directory + "\033[0m]\n" + "\033[95m└────╼ \033[0m""")
-    
+                        + "\033[95m┌─╼ \033[0m" + "root " + "\033[95m╺─╸ \033[0m" + "playstation " + "[\033[95m" + directory + "\033[0m]\n" + "\033[95m└────╼ \033[0m""")
+
     ccapiOption = int(ccapiOption)
 
     if ccapiOption == 1:
-        print("TEST")
         beep()
     elif ccapiOption == 3:
         installSPRX()
@@ -103,10 +112,11 @@ while ccapiMenu == True:
         installSPRX()
     elif ccapiOption == 6:
         installSPRX()
-  
+
 
 def beep():
     urllib.request.urlopen("http://"+ps3IP+":6333/ccapi/ringbuzzer?type=1")
+
 
 menu = True
 
@@ -120,7 +130,7 @@ while menu == True:
 sMM.                        sMM.                           .MMs    
 sMM.               /++++++++mNh`           ++++++++++++++++dNd.      
 :oo`               /////////:-             ////////////////:-\033[0m
-			             Developed by: \033[95mdream.in.code\033[0m\n
+			             Developed by: \033[95mdreamxinxcode\033[0m\n
 ###############################################################\n
            [\033[95m1\033[0m] Connect              [\033[95m6\033[0m] Upload File
            [\033[95m2\033[0m] Install SPRX         [\033[95m7\033[0m] Delete File
@@ -128,8 +138,8 @@ sMM.               /++++++++mNh`           ++++++++++++++++dNd.
            [\033[95m4\033[0m] List Directory       [\033[95m9\033[0m] Help
            [\033[95m5\033[0m] Change Directory     [\033[95m10\033[0m] Exit\n
 ###############################################################\n\n"""
-+ "\033[95m┌─╼ \033[0m" + "root " + "\033[95m╺─╸ \033[0m" + "playstation " + "[\033[95m" + directory + "\033[0m]\n" + "\033[95m└────╼ \033[0m""")
-    
+                   + "\033[95m┌─╼ \033[0m" + "root " + "\033[95m╺─╸ \033[0m" + "playstation " + "[\033[95m" + directory + "\033[0m]\n" + "\033[95m└────╼ \033[0m""")
+
     option = int(option)
 
     if option == 1:
@@ -150,8 +160,7 @@ sMM.               /++++++++mNh`           ++++++++++++++++dNd.
         menu = False
         ccapiMenu = True
     elif option == 9:
-        beep()
+        help()
     elif option == 10:
         ftp.quit()
         exit(0)
-
