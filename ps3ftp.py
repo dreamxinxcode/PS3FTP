@@ -88,30 +88,31 @@ def help():
 
 
 ccapiMenu = False
+def ccapi():
+    while ccapiMenu == True:
+        menu = False
+        ccapiOption = input("""
+    ###############################################################\n
+            [\033[95m1\033[0m] Console ID & PSID    [\033[95m6\033[0m] Upload File
+            [\033[95m2\033[0m] Console Power        [\033[95m7\033[0m] Delete File
+            [\033[95m3\033[0m] Notification Options [\033[95m8\033[0m] Disconnect
+            [\033[95m4\033[0m] Console Information  [\033[95m9\033[0m] Help
+            [\033[95m5\033[0m] Buzzer Options       [\033[95m10\033[0m] Exit\n
+    ###############################################################\n\n"""
+                            + "\033[95m┌─╼ \033[0m" + "root " + "\033[95m╺─╸ \033[0m" + "playstation " + "[\033[95m" + directory + "\033[0m]\n" + "\033[95m└────╼ \033[0m""")
 
-while ccapiMenu == True:
-    ccapiOption = input("""
-###############################################################\n
-           [\033[95m1\033[0m] Console ID & PSID    [\033[95m6\033[0m] Upload File
-           [\033[95m2\033[0m] Console Power        [\033[95m7\033[0m] Delete File
-           [\033[95m3\033[0m] Notification Options [\033[95m8\033[0m] Disconnect
-           [\033[95m4\033[0m] Console Information  [\033[95m9\033[0m] Help
-           [\033[95m5\033[0m] Buzzer Options       [\033[95m10\033[0m] Exit\n
-###############################################################\n\n"""
-                        + "\033[95m┌─╼ \033[0m" + "root " + "\033[95m╺─╸ \033[0m" + "playstation " + "[\033[95m" + directory + "\033[0m]\n" + "\033[95m└────╼ \033[0m""")
+        ccapiOption = int(ccapiOption)
 
-    ccapiOption = int(ccapiOption)
-
-    if ccapiOption == 1:
-        beep()
-    elif ccapiOption == 3:
-        installSPRX()
-    elif ccapiOption == 4:
-        installSPRX()
-    elif ccapiOption == 5:
-        installSPRX()
-    elif ccapiOption == 6:
-        installSPRX()
+        if ccapiOption == 1:
+            beep()
+        elif ccapiOption == 3:
+            installSPRX()
+        elif ccapiOption == 4:
+            installSPRX()
+        elif ccapiOption == 5:
+            installSPRX()
+        elif ccapiOption == 6:
+            installSPRX()
 
 
 def beep():
@@ -125,8 +126,8 @@ while menu == True:
         option = int(input("""\033[95m
     :ooooooooooo+++++:.          .:+++++++++-  ++++++++++++++++/:`
     .::::::::::::::/oNNo        :mMs////////.  ///////////////+hMm-
-                    mMm        sMM.                           -MMo
-    -/ossssssssssssyNd:        sMM.           ssssssssssssssssmMd.
+                     mMm        sMM.                           -MMo
+    -/ossssssssssssyNd:         sMM.           ssssssssssssssssmMd.
     :NMs:------------.`         sMM.           ---------------:yMm-  
     sMM.                        sMM.                           .MMs    
     sMM.               /++++++++mNh`           ++++++++++++++++dNd.      
@@ -157,8 +158,7 @@ while menu == True:
         elif option == 7:
             delete()
         elif option == 8:
-            menu = False
-            ccapiMenu = True
+            ccapi()
         elif option == 9:
             help()
         elif option == 10:
