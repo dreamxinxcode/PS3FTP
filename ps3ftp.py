@@ -167,4 +167,7 @@ while menu == True:
     except ValueError:
         print("[\033[9m!\033[0m] Enter a valid option")
         sleep(2)
-
+    except KeyboardInterrupt:
+        print("\nKeyboard Interrupt Error!")
+        sys.exit()
+        os.system('clear')
